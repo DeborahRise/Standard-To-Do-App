@@ -1,20 +1,37 @@
-let taskList = [];
-let schedule =[];
+let taskList = (localStorage.getItem('taskList')) ? JSON.parse(localStorage.getItem('taskList')) : [];
+let schedule = localStorage.getItem('schedule') ? JSON.parse(localStorage.getItem('schedule')) : [];
+let statusList = localStorage.getItem('statusList') ? JSON.parse(localStorage.getItem('statusList')) : [];
+
+const formatdate = (datetime) => {
+    const dateObj = new Date(datetime);
+    const pattern = {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minutes: '2-digit',
+        hour12: true
+    };
+    return dateObj.toLocaleString('en-US', pattern);
+};
 
 const displayTodo = () => {
     let todoHtml = "";
-    for (let i = 0; i<taskList.length; i++) {
+    taskList.forEach((task, i) => {
         const taskId = `task-${i}`
-        todoHtml += `<div id="${taskId}" class="tasklist" style="margin-bottom: 10px;">
-            <div>${taskList[i] || 'empty task'}</div>
-            <div> ${schedule[i] || '--'} </div>
-            <button class="delete-button" onclick="deleteTask(${i})">Delete</button>
-            <select name="TaskStatus" id="TaskStatus" onchange="handleChange(${i}, this)">
-                    <option value="undone">Undone</option>
-                    <option value="done">Done</option>
-                </select>
-        </div>`;
-    }
+                const status = statusList[i] || 'undone';
+                const statusClass = status === 'done' ? 'tasklist2' : 'tasklist'
+                const formatted_date = formatdate(schedule[i]);
+                todoHtml += `<div id="${taskId}" class="${statusClass}" style="margin-bottom: 10px;">
+                    <div>${taskList[i] || 'empty task'}</div>
+                    <div> ${formatted_date || '--'} </div>
+                    <button class="delete-button" onclick="deleteTask(${i})">Delete</button>
+                    <select name="TaskStatus" id="TaskStatus-${i}" onchange="handleChange(${i}, this)">
+                            <option value="undone" ${status === 'undone' ? 'selected' : ''}>Undone</option>
+                            <option value="done" ${status === 'done' ? 'selected' : ''}>Done</option>
+                        </select>
+                </div>`;
+    });
     document.querySelector('.js-tasklist').innerHTML = todoHtml;
 }
 
@@ -23,14 +40,18 @@ const addTask = () => {
     let taskDate = document.querySelector('.js-input-datetime').value
     taskList.push(taskName);
     schedule.push(taskDate);
+    statusList.push('undone');
     displayTodo();
     document.querySelector('.js-input-task').value = "";
+    locStorage();
 };
 
 const deleteTask = (index) => {
     taskList.splice(index, 1)
     schedule.splice(index, 1)
+    statusList.splice(index, 1)
     displayTodo();
+    locStorage();
 };
 
 const handleChange = (index, selectElement) => {
@@ -41,10 +62,18 @@ const handleChange = (index, selectElement) => {
     if (selectedOption === 'done') {
         taskElement.classList.remove("tasklist")
         taskElement.classList.add("tasklist2")
+        localStorage.setItem('taskList', JSON.stringify(taskList));
+        localStorage.setItem('schedule', JSON.stringify(schedule));
     } else if (selectedOption === 'undone')  {
         taskElement.classList.remove("tasklist2")
         taskElement.classList.add("tasklist")
     }
+    statusList[index] = selectedOption;
+    locStorage();
 }
-
-console.log('vaerify', taskList)
+const locStorage = () => {
+    localStorage.setItem('taskList', JSON.stringify(taskList));
+    localStorage.setItem('schedule', JSON.stringify(schedule));
+    localStorage.setItem('statusList', JSON.stringify(statusList));
+}
+displayTodo();
