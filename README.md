@@ -50,9 +50,29 @@ The forEach method is used to iterate over the task list and perform actions on 
 - Use event listeners to capture user input from the input field.
 - When the "Add" button is clicked or the Enter key is pressed, add the input value as a new task to the list.
 
-#### Marking Tasks as Completed:
+### Mark Task as Done or Undone
+Each task has a status dropdown with two options: "Done" and "Undone".
+Selecting "Done" changes the task's appearance to indicate it is completed.
+Selecting "Undone" reverts the task's appearance to indicate it is pending.
 
-- Add an event listener to each task item to toggle its completed state when clicked.
+### Task List Styling
+The task list is styled with CSS to differentiate between pending and completed tasks.
+Pending tasks are displayed with a red color.
+Completed tasks are displayed with a green color.
+
+## How to Use
+### Adding a Task
+1. Enter a task description in the input field.
+2. Select a due date using the datetime picker.
+3. Click the "ADD TASK" button to add the task to the list.
+
+### Deleting a Task
+1. Click the "Delete" button next to the task you want to remove.
+
+### Marking a Task as Done or Undone
+1. Use the dropdown menu next to each task to select "Done" or "Undone".
+2. The task's appearance will change based on its status.
+
 
 #### Deleting Tasks:
 
@@ -80,6 +100,11 @@ Each task has a delete button next to it. When the user clicks the delete button
 ### Data Feature
 
 Tasks are stored in local storage, ensuring that they remain available even after the page is refreshed. This feature provides a persistent to-do list experience.
+
+### Future Improvements
+- Local Storage: Save tasks in the local storage to persist them across page reloads.
+- Edit Task: Add functionality to edit task descriptions and due dates.
+- Task Prioritization: Allow users to set task priorities and sort tasks accordingly.
 
 ## Summary
 
