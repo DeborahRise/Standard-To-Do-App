@@ -7,6 +7,7 @@ body {
     column-gap: 10px;
     row-gap: 30px;
     font-weight: 700;
+    color: rgb(195, 71, 5);
     font-size: 18px;
 }
 .tasklist2 {
