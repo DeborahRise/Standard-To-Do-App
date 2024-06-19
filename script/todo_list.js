@@ -9,8 +9,8 @@ const formatdate = (datetime) => {
         month: 'short',
         day: 'numeric',
         hour: '2-digit',
-        minutes: '2-digit',
-        hour12: true
+        // minute: '2-digit',
+        hour24: true
     };
     return dateObj.toLocaleString('en-US', pattern);
 };
@@ -35,6 +35,17 @@ const displayTodo = () => {
     document.querySelector('.js-tasklist').innerHTML = todoHtml;
 }
 
+addingInput = document.querySelector('.js-input-task');
+addingInput.addEventListener('keydown', (event) => {
+    if (event.key === "Enter"){
+        addTask();
+    }
+});
+
+const addingTask = document.querySelector('.js-add-button');
+addingTask.addEventListener('click', () => {
+    addTask();
+});
 const addTask = () => {
     let taskName = document.querySelector('.js-input-task').value;
     let taskDate = document.querySelector('.js-input-datetime').value
